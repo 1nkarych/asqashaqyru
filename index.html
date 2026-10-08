@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -30,8 +30,7 @@
                     },
                     fontFamily: {
                         serif: ['"Cormorant Garamond"', 'Playfair Display', 'serif'],
-                        sans: ['Montserrat', 'sans-serif'],
-                        quranic: ['Amiri', 'serif']
+                        sans: ['Montserrat', 'sans-serif']
                     }
                 }
             }
@@ -94,15 +93,6 @@
         .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
@@ -122,10 +112,13 @@
     <!-- Background Pattern -->
     <div class="fixed inset-0 ornament-bg pointer-events-none z-0"></div>
 
-    <!-- Floating Audio Control -->
+    <!-- Floating Audio Control & Edit Panel Buttons -->
     <div class="fixed top-4 right-4 z-50 flex items-center space-x-2">
-        <button id="audioToggleBtn" onclick="toggleAudio()" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur border border-goldAccent/40 text-goldAccent shadow-lg flex items-center justify-center hover:scale-105 transition-all floating">
+        <button id="audioToggleBtn" onclick="toggleAudio()" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur border border-goldAccent/40 text-goldAccent shadow-lg flex items-center justify-center hover:scale-105 transition-all">
             <i id="audioIcon" class="fas fa-music text-lg"></i>
+        </button>
+        <button onclick="openEditModal()" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur border border-goldAccent/40 text-textPrimary shadow-lg flex items-center justify-center hover:scale-105 transition-all" title="Мәліметтерді өңдеу">
+            <i class="fas fa-edit text-lg"></i>
         </button>
     </div>
 
@@ -166,13 +159,15 @@
         </div>
 
         <!-- HERO ARCH CARD -->
-        <div class="arch-container w-full p-6 pt-12 pb-10 text-center border border-goldAccent/30 shadow-xl flex flex-col items-center fade-in">
+        <div class="arch-container w-full p-6 pt-12 pb-10 text-center border border-goldAccent/30 shadow-xl flex flex-col items-center">
             
-            <!-- Bismillah Calligraphy -->
+            <!-- Bismillah Calligraphy SVG Frame -->
             <div class="mb-4">
-                <p class="font-quranic text-darkGold text-3xl italic" id="displayBismillah">
-                    بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-                </p>
+                <svg class="w-48 h-12 mx-auto text-darkGold" viewBox="0 0 300 70" fill="currentColor">
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="serif" font-size="28" font-style="italic">
+                        بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                    </text>
+                </svg>
                 <div class="h-0.5 w-24 bg-gradient-to-r from-transparent via-goldAccent to-transparent mx-auto mt-1"></div>
             </div>
 
@@ -181,11 +176,11 @@
                 Асқа шақыру
             </h1>
             <p class="font-serif-title italic text-goldAccent text-lg mb-6" id="displaySubtitle">
-                Жұмабекұлы Олжасты еске алу асы
+                Жұмабекұлы Олжасты 10 жыл еске алу асы
             </p>
 
-            <!-- Deceased Photo Frame with subtle float -->
-            <div class="relative my-4 group floating">
+            <!-- Deceased Photo Frame -->
+            <div class="relative my-4 group">
                 <div class="w-44 h-56 sm:w-52 sm:h-64 rounded-t-full border-4 border-goldAccent p-1.5 bg-white shadow-2xl overflow-hidden mx-auto transition-transform duration-500 group-hover:scale-[1.02]">
                     <img id="displayPhoto" src="olzhas.jpg" alt="Олжас Жұмабекұлының суреті" class="w-full h-full object-cover rounded-t-full" onerror="this.src='https://placehold.co/400x500/EAF3F7/8B6E32?text=Олжас'>
                 </div>
@@ -205,32 +200,30 @@
 
             <div class="w-16 h-0.5 bg-goldAccent/40 my-6"></div>
 
-            <!-- Invitation Text with Fade-in animation -->
-            <p class="text-sm sm:text-base text-textPrimary leading-relaxed font-light px-2 fade-in" id="displayInvitationText" style="animation-delay: 0.5s;">
-                Талқанбай атаның немересі, Жұмабекұлы Олжастың жылдық асына орай жайылатын дастарханға қадірлі қонақ болып, ас қайырып, дұға бағыштауға шақырамыз.
-            </p>
+            <!-- Invitation Text -->
+            <p class="text-sm sm:text-base text-textPrimary leading-relaxed font-light px-2" id="displayInvitationText">Құрметті ағайын-туыс, бауырлар, дос-жарандар!<br>Сіздерді Талқанбай атаның немересі, Жұмабекұлы Олжасты 10 жыл еске алу асына шақырамыз.</p>
         </div>
 
         <!-- COUNTDOWN TIMER CARD -->
-        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center fade-in" style="animation-delay: 1s;">
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center">
             <h3 class="font-serif-title text-xl text-darkGold font-semibold mb-4 flex items-center justify-center gap-2">
                 <i class="far fa-clock"></i> Ас берілуге қалған уақыт
             </h3>
             
             <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-xs sm:max-w-sm mx-auto" id="countdownContainer">
-                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20">
                     <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdDays">00</span>
                     <span class="text-[10px] sm:text-xs text-textMuted uppercase">Күн</span>
                 </div>
-                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20">
                     <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdHours">00</span>
                     <span class="text-[10px] sm:text-xs text-textMuted uppercase">Сағат</span>
                 </div>
-                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20">
                     <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdMinutes">00</span>
                     <span class="text-[10px] sm:text-xs text-textMuted uppercase">Минут</span>
                 </div>
-                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20">
                     <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdSeconds">00</span>
                     <span class="text-[10px] sm:text-xs text-textMuted uppercase">Секунд</span>
                 </div>
@@ -238,7 +231,7 @@
         </div>
 
         <!-- EVENT DETAILS CARD -->
-        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg fade-in" style="animation-delay: 1.5s;">
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg">
             <h2 class="font-serif-title text-2xl text-center font-bold text-textPrimary mb-6 border-b border-goldAccent/20 pb-3">
                 Өтетін уақыты мен мекенжайы
             </h2>
@@ -275,14 +268,73 @@
                     </div>
                     <div>
                         <h4 class="text-xs uppercase tracking-wider text-textMuted font-semibold">Ас иелері</h4>
-                        <p class="text-base font-semibold text-textPrimary" id="displayHosts">Талқанбай әулеті.</p>
+                        <p class="text-base font-semibold text-textPrimary" id="displayHosts">Анасы, бауырлары, ұлы және достары.</p>
                     </div>
                 </div>
             </div>
 
-       
+       <div class="grid grid-cols-2 gap-3 mt-6 pt-4 border-t border-goldAccent/20">
+                <a id="link2Gis" href="https://go.2gis.com/FmbZX" target="_blank" class="flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium py-2.5 px-3 rounded-xl transition-colors shadow">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>2GIS картасы</span>
+                </a>
+                </div>
+
+        <!-- RSVP FORM CARD -->
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg">
+            <h2 class="font-serif-title text-2xl text-center font-bold text-textPrimary mb-2">
+                Қатысуыңызды растаңыз
+            </h2>
+            <p class="text-xs text-center text-textMuted mb-6">
+                Асқа келетініңізді алдын ала хабарлауыңызды өтінеміз
+            </p>
+
+            <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-textMuted mb-1">Аты-жөніңіз</label>
+                    <input type="text" id="guestName" required placeholder="Мысалы: Арман Серікұлы" class="w-full px-4 py-2.5 rounded-xl border border-goldAccent/30 focus:outline-none focus:border-goldAccent bg-iceBg/30 text-textPrimary text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-textMuted mb-1">Келесіз бе?</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center justify-center p-2.5 border border-goldAccent/30 rounded-xl cursor-pointer hover:bg-iceBg transition-all">
+                            <input type="radio" name="attendance" value="Келемін" checked class="text-goldAccent focus:ring-goldAccent mr-2">
+                            <span class="text-sm font-medium text-textPrimary">Иә, келемін</span>
+                        </label>
+                        <label class="flex items-center justify-center p-2.5 border border-goldAccent/30 rounded-xl cursor-pointer hover:bg-iceBg transition-all">
+                            <input type="radio" name="attendance" value="Келе алмаймын" class="text-goldAccent focus:ring-goldAccent mr-2">
+                            <span class="text-sm font-medium text-textPrimary">Өкінішке орай...</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase text-textMuted mb-1">Адам саны</label>
+                    <select id="guestCount" class="w-full px-4 py-2.5 rounded-xl border border-goldAccent/30 focus:outline-none focus:border-goldAccent bg-iceBg/30 text-textPrimary text-sm">
+                        <option value="1 адам">1 адам</option>
+                        <option value="2 адам">2 адам</option>
+                        <option value="3+ адам">3 немесе одан көп</option>
+                        <option value="Отбасымызбен">Отбасымызбен</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-goldAccent hover:bg-goldHover text-white font-medium rounded-xl shadow-md transition-all flex items-center justify-center space-x-2">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Жауапты жіберу</span>
+                </button>
+            </form>
+
+            <div id="rsvpSuccess" class="hidden mt-4 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center text-emerald-800 text-sm">
+                <i class="fas fa-check-circle text-emerald-600 text-2xl mb-1 block"></i>
+                Рахмет! Жауабыңыз қабылданды.
+            </div>
+        </div>
+
+        
+
         <!-- SHARE / WHATSAPP INVITATION CARD -->
-        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center fade-in" style="animation-delay: 2s;">
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center">
             <h3 class="font-serif-title text-xl text-textPrimary font-bold mb-2">
                 Шақыруды тарату
             </h3>
@@ -291,11 +343,11 @@
             </p>
 
             <div class="flex flex-col sm:flex-row gap-3">
-                <button onclick="shareWhatsApp()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow hover:scale-105">
+                <button onclick="shareWhatsApp()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow">
                     <i class="fab fa-whatsapp text-lg"></i>
                     <span>WhatsApp-пен бөлісу</span>
                 </button>
-                <button onclick="copyPageLink()" class="flex-1 py-2.5 bg-iceBg border border-goldAccent/40 text-textPrimary font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow hover:scale-105">
+                <button onclick="copyPageLink()" class="flex-1 py-2.5 bg-iceBg border border-goldAccent/40 text-textPrimary font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow">
                     <i class="fas fa-link"></i>
                     <span>Сілтемені көшіру</span>
                 </button>
@@ -303,17 +355,80 @@
             <p id="copyToast" class="text-xs text-emerald-600 font-medium mt-2 hidden">Сілтеме көшірілді!</p>
         </div>
 
-        <!-- FOOTER with Kazakh proverb -->
+        <!-- FOOTER -->
         <footer class="mt-8 mb-4 text-center text-xs text-textMuted">
-            <p class="font-serif italic text-darkGold">«Өлі разы болмай, тірі байымайды»</p>
+            <p class="font-serif italic text-darkGold">«Жақсының аты өшпейді, ғалымның хаты өшпейді»</p>
             <p class="mt-1 opacity-70">Асқа шақыру еске алу парақшасы</p>
         </footer>
     </main>
 
+    <!-- CUSTOMIZATION / OWNER EDIT MODAL -->
+    <div id="editModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl border border-goldAccent/40">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="font-serif-title text-xl font-bold text-textPrimary">Шақыру мәліметтерін өңдеу</h3>
+                <button onclick="closeEditModal()" class="text-textMuted hover:text-black"><i class="fas fa-times text-lg"></i></button>
+            </div>
 
-    <!-- AUDIO PLAYER ELEMENT (ḥāfiẓ instrumental ambient) -->
+            <form onsubmit="saveCustomization(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Тақырып</label>
+                    <input type="text" id="editTitle" value="Еске алу асына шақыру" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Марқұмның аты-жөні</label>
+                    <input type="text" id="editName" value="Олжас Жұмабекұлы" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Сурет URL немесе файлы</label>
+                    <input type="text" id="editPhoto" class="w-full px-3 py-2 border rounded-lg text-sm" value="olzhas.jpg" placeholder="Сурет сілтемесі">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Құран аяты / Дұға сөзі</label>
+                    <textarea id="editQuranVerse" rows="2" class="w-full px-3 py-2 border rounded-lg text-sm"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-textMuted mb-1">Күні</label>
+                        <input type="text" id="editDate" class="w-full px-3 py-2 border rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-textMuted mb-1">Уақыты</label>
+                        <input type="text" id="editTime" class="w-full px-3 py-2 border rounded-lg text-sm">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Кері санақ мерзімі (YYYY-MM-DD)</label>
+                    <input type="date" id="editTargetDate" value="2026-10-24" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Мейрамхана / Орын аты</label>
+                    <input type="text" id="editVenue" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Мекенжай</label>
+                    <input type="text" id="editAddress" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Ас иелері</label>
+                    <input type="text" id="editHosts" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-textMuted mb-1">Байланыс телефоны</label>
+                    <input type="text" id="editPhone" class="w-full px-3 py-2 border rounded-lg text-sm">
+                </div>
+
+                <div class="pt-3 flex justify-end space-x-2 border-t">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 border rounded-lg text-xs font-medium">Бас тарту</button>
+                    <button type="submit" class="px-4 py-2 bg-goldAccent text-white rounded-lg text-xs font-medium">Сақтау</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AUDIO PLAYER ELEMENT (Sazgen/Kobyz/Quran Ambient Tone) -->
     <audio id="bgAudio" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2024/05/15/audio_1808fbf07a.mp3?filename=islamic-background-ambient-209848.mp3" type="audio/mpeg">
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=arabic-ambient-112348.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -326,7 +441,7 @@
             const distance = targetDate.getTime() - now;
 
             if (distance < 0) {
-                document.getElementById('countdownContainer').innerHTML = '<div class="col-span-4 text-center font-bold text-darkGold">Ас беру уақыты жетті. Жаратқан дұға-тілектеріңізді қабыл етсін.</div>';
+                document.getElementById('countdownContainer').innerHTML = '<div class="col-span-4 text-center font-bold text-darkGold">Ас беру уақыты жетті</div>';
                 return;
             }
 
@@ -349,21 +464,55 @@
         function toggleAudio() {
             const audio = document.getElementById('bgAudio');
             const icon = document.getElementById('audioIcon');
-            const btn = document.getElementById('audioToggleBtn');
             
             if (isPlaying) {
                 audio.pause();
                 icon.className = 'fas fa-music text-lg';
-                btn.classList.add('floating');
             } else {
                 audio.play().then(() => {
-                    icon.className = 'fas fa-volume-up text-lg animate-pulse text-emerald-600';
-                    btn.classList.remove('floating');
+                    icon.className = 'fas fa-volume-up text-lg text-emerald-600 animate-pulse';
                 }).catch(e => {
                     console.log('Audio autoplay blocked or source error', e);
                 });
             }
             isPlaying = !isPlaying;
+        }
+
+        // RSVP Handler
+        function handleRSVPSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value;
+            const attendance = document.querySelector('input[name="attendance"]:checked').value;
+            const count = document.getElementById('guestCount').value;
+
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+
+            console.log('RSVP Received:', { name, attendance, count });
+        }
+
+        // Memory Wall Handler
+        function handleAddMemory(e) {
+            e.preventDefault();
+            const author = document.getElementById('memoryAuthor').value;
+            const text = document.getElementById('memoryText').value;
+
+            const list = document.getElementById('memoryList');
+            const newCard = document.createElement('div');
+            newCard.className = 'p-3 bg-iceBg/40 rounded-xl border border-goldAccent/20 fade-in';
+            newCard.innerHTML = `
+                <p class="text-xs font-bold text-darkGold">${escapeHTML(author)}</p>
+                <p class="text-xs text-textMuted italic mt-1">«${escapeHTML(text)}»</p>
+            `;
+
+            list.prepend(newCard);
+            document.getElementById('memoryForm').reset();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
         }
 
         // Share Link Functions
@@ -387,6 +536,51 @@
             const toast = document.getElementById('copyToast');
             toast.classList.remove('hidden');
             setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        // Edit Modal Controls
+        function openEditModal() {
+            document.getElementById('editTitle').value = document.getElementById('displayTitle').innerText;
+            document.getElementById('editName').value = document.getElementById('displayName').innerText;
+            document.getElementById('editPhoto').value = document.getElementById('displayPhoto').src;
+            document.getElementById('editQuranVerse').value = document.getElementById('displayQuranVerse').innerText;
+            document.getElementById('editDate').value = document.getElementById('displayDate').innerText;
+            document.getElementById('editTime').value = document.getElementById('displayTime').innerText.replace('Сағат: ', '');
+            document.getElementById('editVenue').value = document.getElementById('displayVenue').innerText;
+            document.getElementById('editAddress').value = document.getElementById('displayAddress').innerText;
+            document.getElementById('editHosts').value = document.getElementById('displayHosts').innerText;
+            document.getElementById('editPhone').value = document.getElementById('displayPhone').innerText.replace('Байланыс: ', '');
+
+            document.getElementById('editModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.add('hidden');
+        }
+
+        function saveCustomization(e) {
+            e.preventDefault();
+            document.getElementById('displayTitle').innerText = document.getElementById('editTitle').value;
+            document.getElementById('displayName').innerText = document.getElementById('editName').value;
+            
+            const newPhoto = document.getElementById('editPhoto').value;
+            if(newPhoto) document.getElementById('displayPhoto').src = newPhoto;
+
+            document.getElementById('displayQuranVerse').innerText = document.getElementById('editQuranVerse').value;
+            document.getElementById('displayDate').innerText = document.getElementById('editDate').value;
+            document.getElementById('displayTime').innerText = 'Сағат: ' + document.getElementById('editTime').value;
+            document.getElementById('displayVenue').innerText = document.getElementById('editVenue').value;
+            document.getElementById('displayAddress').innerText = document.getElementById('editAddress').value;
+            document.getElementById('displayHosts').innerText = document.getElementById('editHosts').value;
+            document.getElementById('displayPhone').innerText = 'Байланыс: ' + document.getElementById('editPhone').value;
+
+            const customDateVal = document.getElementById('editTargetDate').value;
+            if (customDateVal) {
+                targetDate = new Date(customDateVal);
+                updateCountdown();
+            }
+
+            closeEditModal();
         }
     </script>
 </body>
