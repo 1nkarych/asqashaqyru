@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Асқа шақыру | Еске алу кеші</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        iceBg: '#EAF3F7',
+                        iceCard: '#F5F9FA',
+                        goldAccent: '#C5A059',
+                        goldHover: '#B28E46',
+                        darkGold: '#8B6E32',
+                        textPrimary: '#2C3A47',
+                        textMuted: '#576574'
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        quranic: ['Amiri', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #EAF3F7;
+            color: #2C3A47;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-serif-title {
+            font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+        }
+
+        /* Subtle Islamic Ornament Background Overlay */
+        .ornament-bg {
+            background-image: radial-gradient(#C5A059 0.75px, transparent 0.75px), radial-gradient(#C5A059 0.75px, #EAF3F7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.15;
+        }
+
+        /* SVG Arch Frame Styles */
+        .arch-container {
+            position: relative;
+            border-radius: 200px 200px 0 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(245,249,250,0.9) 100%);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        /* Gold border stroke */
+        .gold-border {
+            border: 2px solid #C5A059;
+        }
+
+        .gold-border-double {
+            border: 4px double #C5A059;
+        }
+
+        /* Animation Keyframes */
+        @keyframes swing {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        .lantern-swing {
+            transform-origin: top center;
+            animation: swing 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #EAF3F7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A059;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start relative selection:bg-goldAccent selection:text-white">
+
+    <!-- Background Pattern -->
+    <div class="fixed inset-0 ornament-bg pointer-events-none z-0"></div>
+
+    <!-- Floating Audio Control -->
+    <div class="fixed top-4 right-4 z-50 flex items-center space-x-2">
+        <button id="audioToggleBtn" onclick="toggleAudio()" class="w-11 h-11 rounded-full bg-white/90 backdrop-blur border border-goldAccent/40 text-goldAccent shadow-lg flex items-center justify-center hover:scale-105 transition-all floating">
+            <i id="audioIcon" class="fas fa-music text-lg"></i>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-xl mx-auto px-4 py-6 z-10 relative flex flex-col items-center">
+
+        <!-- Top Lanterns Visual Decorative Element -->
+        <div class="w-full flex justify-between px-6 -mb-8 z-20 pointer-events-none">
+            <!-- Left Lantern SVG -->
+            <div class="lantern-swing w-16 h-36 flex flex-col items-center">
+                <div class="w-0.5 h-16 bg-gradient-to-b from-transparent via-goldAccent to-goldAccent"></div>
+                <svg class="w-12 h-20 text-goldAccent drop-shadow" viewBox="0 0 100 160" fill="currentColor">
+                    <path d="M50 0 L55 15 L45 15 Z" />
+                    <rect x="48" y="15" width="4" height="15" fill="#8B6E32"/>
+                    <path d="M30 30 C30 30, 50 20, 70 30 L80 60 L20 60 Z" />
+                    <rect x="25" y="60" width="50" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <path d="M35 60 L35 110 M50 60 L50 110 M65 60 L65 110" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="50" cy="85" r="8" fill="#F59E0B" class="animate-pulse"/>
+                    <path d="M20 110 L80 110 L50 140 Z"/>
+                    <circle cx="50" cy="148" r="4"/>
+                </svg>
+            </div>
+
+            <!-- Right Lantern SVG -->
+            <div class="lantern-swing w-16 h-36 flex flex-col items-center" style="animation-delay: -2s;">
+                <div class="w-0.5 h-16 bg-gradient-to-b from-transparent via-goldAccent to-goldAccent"></div>
+                <svg class="w-12 h-20 text-goldAccent drop-shadow" viewBox="0 0 100 160" fill="currentColor">
+                    <path d="M50 0 L55 15 L45 15 Z" />
+                    <rect x="48" y="15" width="4" height="15" fill="#8B6E32"/>
+                    <path d="M30 30 C30 30, 50 20, 70 30 L80 60 L20 60 Z" />
+                    <rect x="25" y="60" width="50" height="50" rx="5" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <path d="M35 60 L35 110 M50 60 L50 110 M65 60 L65 110" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="50" cy="85" r="8" fill="#F59E0B" class="animate-pulse"/>
+                    <path d="M20 110 L80 110 L50 140 Z"/>
+                    <circle cx="50" cy="148" r="4"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- HERO ARCH CARD -->
+        <div class="arch-container w-full p-6 pt-12 pb-10 text-center border border-goldAccent/30 shadow-xl flex flex-col items-center fade-in">
+            
+            <!-- Bismillah Calligraphy -->
+            <div class="mb-4">
+                <p class="font-quranic text-darkGold text-3xl italic" id="displayBismillah">
+                    بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
+                </p>
+                <div class="h-0.5 w-24 bg-gradient-to-r from-transparent via-goldAccent to-transparent mx-auto mt-1"></div>
+            </div>
+
+            <!-- Title -->
+            <h1 class="font-serif-title text-4xl sm:text-5xl font-bold tracking-wide text-textPrimary mb-2" id="displayTitle">
+                Асқа шақыру
+            </h1>
+            <p class="font-serif-title italic text-goldAccent text-lg mb-6" id="displaySubtitle">
+                Жұмабекұлы Олжасты еске алу асы
+            </p>
+
+            <!-- Deceased Photo Frame with subtle float -->
+            <div class="relative my-4 group floating">
+                <div class="w-44 h-56 sm:w-52 sm:h-64 rounded-t-full border-4 border-goldAccent p-1.5 bg-white shadow-2xl overflow-hidden mx-auto transition-transform duration-500 group-hover:scale-[1.02]">
+                    <img id="displayPhoto" src="olzhas.jpg" alt="Олжас Жұмабекұлының суреті" class="w-full h-full object-cover rounded-t-full" onerror="this.src='https://placehold.co/400x500/EAF3F7/8B6E32?text=Олжас'>
+                </div>
+                <!-- Decorative Frame Wings -->
+                <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white border border-goldAccent px-4 py-1 rounded-full shadow-md">
+                    <span class="font-serif text-sm tracking-widest text-darkGold uppercase font-semibold" id="displayName">Олжас Жұмабекұлы</span>
+                </div>
+            </div>
+
+            <!-- Dedicated Quranic Verse / Memorial Quote -->
+            <div class="mt-8 px-4 max-w-md">
+                <p class="font-serif italic text-base sm:text-lg text-textMuted leading-relaxed" id="displayQuranVerse">«Инна лилляхи ва инна иляйхи раджиун»<br>«Шын мәнінде, біз Аллаға тәнбіз және Оған қайтушымыз»</p>
+                <p class="text-xs text-goldAccent mt-2 uppercase tracking-widest font-medium" id="displaySubQuote">
+                    (Бақара сүресі, 156-аят)
+                </p>
+            </div>
+
+            <div class="w-16 h-0.5 bg-goldAccent/40 my-6"></div>
+
+            <!-- Invitation Text with Fade-in animation -->
+            <p class="text-sm sm:text-base text-textPrimary leading-relaxed font-light px-2 fade-in" id="displayInvitationText" style="animation-delay: 0.5s;">
+                Талқанбай атаның немересі, Жұмабекұлы Олжастың жылдық асына орай жайылатын дастарханға қадірлі қонақ болып, ас қайырып, дұға бағыштауға шақырамыз.
+            </p>
+        </div>
+
+        <!-- COUNTDOWN TIMER CARD -->
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center fade-in" style="animation-delay: 1s;">
+            <h3 class="font-serif-title text-xl text-darkGold font-semibold mb-4 flex items-center justify-center gap-2">
+                <i class="far fa-clock"></i> Ас берілуге қалған уақыт
+            </h3>
+            
+            <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-xs sm:max-w-sm mx-auto" id="countdownContainer">
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                    <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdDays">00</span>
+                    <span class="text-[10px] sm:text-xs text-textMuted uppercase">Күн</span>
+                </div>
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                    <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdHours">00</span>
+                    <span class="text-[10px] sm:text-xs text-textMuted uppercase">Сағат</span>
+                </div>
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                    <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdMinutes">00</span>
+                    <span class="text-[10px] sm:text-xs text-textMuted uppercase">Минут</span>
+                </div>
+                <div class="bg-iceBg rounded-xl p-2 sm:p-3 border border-goldAccent/20 hover:scale-105 transition-transform">
+                    <span class="block text-xl sm:text-2xl font-bold text-textPrimary" id="cdSeconds">00</span>
+                    <span class="text-[10px] sm:text-xs text-textMuted uppercase">Секунд</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- EVENT DETAILS CARD -->
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg fade-in" style="animation-delay: 1.5s;">
+            <h2 class="font-serif-title text-2xl text-center font-bold text-textPrimary mb-6 border-b border-goldAccent/20 pb-3">
+                Өтетін уақыты мен мекенжайы
+            </h2>
+
+            <div class="space-y-5">
+                <!-- Date & Time -->
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-iceBg border border-goldAccent/40 flex items-center justify-center shrink-0 text-goldAccent">
+                        <i class="far fa-calendar-alt text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-textMuted font-semibold">Күні мен уақыты</h4>
+                        <p class="text-base font-semibold text-textPrimary" id="displayDate">24 қазан 2026 жыл</p>
+                        <p class="text-sm text-textMuted" id="displayTime">Сағат: 12:00</p>
+                    </div>
+                </div>
+
+                <!-- Venue Name -->
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-iceBg border border-goldAccent/40 flex items-center justify-center shrink-0 text-goldAccent">
+                        <i class="fas fa-utensils text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-textMuted font-semibold">Мейрамхана</h4>
+                        <p class="text-base font-semibold text-textPrimary" id="displayVenue">«АльБаракат» мейрамханасы</p>
+                        <p class="text-sm text-textMuted" id="displayAddress">Алмағанбетова көшесі, 17А</p>
+                    </div>
+                </div>
+
+                <!-- Hosts -->
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-full bg-iceBg border border-goldAccent/40 flex items-center justify-center shrink-0 text-goldAccent">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs uppercase tracking-wider text-textMuted font-semibold">Ас иелері</h4>
+                        <p class="text-base font-semibold text-textPrimary" id="displayHosts">Талқанбай әулеті.</p>
+                    </div>
+                </div>
+            </div>
+
+       
+        <!-- SHARE / WHATSAPP INVITATION CARD -->
+        <div class="w-full bg-white/90 backdrop-blur rounded-2xl p-6 mt-6 border border-goldAccent/30 shadow-lg text-center fade-in" style="animation-delay: 2s;">
+            <h3 class="font-serif-title text-xl text-textPrimary font-bold mb-2">
+                Шақыруды тарату
+            </h3>
+            <p class="text-xs text-textMuted mb-4">
+                Туған-туыс пен жақындарға WhatsApp арқылы жіберу
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button onclick="shareWhatsApp()" class="flex-1 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow hover:scale-105">
+                    <i class="fab fa-whatsapp text-lg"></i>
+                    <span>WhatsApp-пен бөлісу</span>
+                </button>
+                <button onclick="copyPageLink()" class="flex-1 py-2.5 bg-iceBg border border-goldAccent/40 text-textPrimary font-medium rounded-xl text-sm transition-all flex items-center justify-center space-x-2 shadow hover:scale-105">
+                    <i class="fas fa-link"></i>
+                    <span>Сілтемені көшіру</span>
+                </button>
+            </div>
+            <p id="copyToast" class="text-xs text-emerald-600 font-medium mt-2 hidden">Сілтеме көшірілді!</p>
+        </div>
+
+        <!-- FOOTER with Kazakh proverb -->
+        <footer class="mt-8 mb-4 text-center text-xs text-textMuted">
+            <p class="font-serif italic text-darkGold">«Өлі разы болмай, тірі байымайды»</p>
+            <p class="mt-1 opacity-70">Асқа шақыру еске алу парақшасы</p>
+        </footer>
+    </main>
+
+
+    <!-- AUDIO PLAYER ELEMENT (ḥāfiẓ instrumental ambient) -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2024/05/15/audio_1808fbf07a.mp3?filename=islamic-background-ambient-209848.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // State variables
+        let targetDate = new Date('2026-10-24T12:00:00');
+
+        // Countdown Timer Logic
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate.getTime() - now;
+
+            if (distance < 0) {
+                document.getElementById('countdownContainer').innerHTML = '<div class="col-span-4 text-center font-bold text-darkGold">Ас беру уақыты жетті. Жаратқан дұға-тілектеріңізді қабыл етсін.</div>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('cdDays').innerText = String(days).padStart(2, '0');
+            document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('cdMinutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('cdSeconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Audio Control Logic
+        let isPlaying = false;
+        function toggleAudio() {
+            const audio = document.getElementById('bgAudio');
+            const icon = document.getElementById('audioIcon');
+            const btn = document.getElementById('audioToggleBtn');
+            
+            if (isPlaying) {
+                audio.pause();
+                icon.className = 'fas fa-music text-lg';
+                btn.classList.add('floating');
+            } else {
+                audio.play().then(() => {
+                    icon.className = 'fas fa-volume-up text-lg animate-pulse text-emerald-600';
+                    btn.classList.remove('floating');
+                }).catch(e => {
+                    console.log('Audio autoplay blocked or source error', e);
+                });
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Share Link Functions
+        function shareWhatsApp() {
+            const name = document.getElementById('displayName').innerText;
+            const date = document.getElementById('displayDate').innerText;
+            const venue = document.getElementById('displayVenue').innerText;
+            const text = `Ассалаумағалейкум / Саламатсыз ба! Сізді ${name} еске алу асына шақырамыз.\nКүні: ${date}\nОрыны: ${venue}\nСілтеме: ${window.location.href}`;
+            
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function copyPageLink() {
+            const dummy = document.createElement('input');
+            document.body.appendChild(dummy);
+            dummy.value = window.location.href;
+            dummy.select();
+            document.execCommand('copy');
+            document.body.removeChild(dummy);
+
+            const toast = document.getElementById('copyToast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+    </script>
+</body>
+</html>
